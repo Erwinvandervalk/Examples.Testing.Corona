@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTest.Tests", "CoronaTest.Tests\CoronaTest.Tests.csproj", "{43E80330-B560-4199-B264-EFD1E8E0FB45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTest.MockLess.Tests", "CoronaTest.MockLess.Tests\CoronaTest.MockLess.Tests.csproj", "{9ABA45F9-A601-4FBD-B031-33A623206CBF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTest.Web", "CoronaTest.Web\CoronaTest.Web.csproj", "{A86F15ED-CC41-4851-8717-F1A89F7A79F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTest.MockLess.Web", "CoronaTest.MockLess.Web\CoronaTest.MockLess.Web.csproj", "{462B7732-653F-41BC-97C8-B8B79FFAD47A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

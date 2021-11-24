@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace CoronaTest.Tests
@@ -10,5 +11,10 @@ namespace CoronaTest.Tests
         {
 
         }
+    }
+
+    public class ApiTestFixture
+    {
+        
     }
 }

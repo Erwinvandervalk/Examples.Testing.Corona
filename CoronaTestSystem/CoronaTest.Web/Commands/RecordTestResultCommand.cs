@@ -1,4 +1,5 @@
 ﻿using System;
+using CoronaTest.Web.Persistence;
 using MediatR;
 
 namespace CoronaTest.Web.Commands

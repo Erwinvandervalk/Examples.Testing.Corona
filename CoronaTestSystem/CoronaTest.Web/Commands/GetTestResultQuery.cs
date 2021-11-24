@@ -1,4 +1,5 @@
 ﻿using System;
+using CoronaTest.Web.Persistence;
 
 namespace CoronaTest.Web.Commands
 {

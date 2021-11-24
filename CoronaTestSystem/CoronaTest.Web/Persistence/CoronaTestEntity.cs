@@ -25,6 +25,7 @@ namespace CoronaTest.Web.Persistence
             var entity = new CoronaTestEntity
             {
                 Id = Guid.NewGuid(),
+                Location = location,
                 ScheduledOn = scheduledOn,
                 TestSubjectIdentificatieNummer = testSubjectIdentificatieNummer,
                 TestSubjectName = testSubjectName,

@@ -1,10 +1,17 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace CoronaTest.Web.Persistence
 {
-    public class CoronaTestRepository
+    public interface ICoronaTestRepository
+    {
+        Task<CoronaTestEntity> Get(Guid id, CancellationToken ct = default);
+        Task SaveAsync(CoronaTestEntity coronaTestEntity, CancellationToken ct);
+    }
+
+    public class CoronaTestRepository : ICoronaTestRepository
     {
         private readonly CoronaDbContext _context;
         private readonly IDateTimeProvider _dateTimeProvider;
@@ -21,8 +28,13 @@ namespace CoronaTest.Web.Persistence
             return item;
         }
 
-        public async Task SaveAsync(CancellationToken ct)
+        public async Task SaveAsync(CoronaTestEntity coronaTestEntity, CancellationToken ct)
         {
+            if (!_context.CoronaTests.Contains(coronaTestEntity))
+            {
+                _context.CoronaTests.Add(coronaTestEntity);
+            }
+
             await _context.SaveChangesAsync(ct);
         }
     }

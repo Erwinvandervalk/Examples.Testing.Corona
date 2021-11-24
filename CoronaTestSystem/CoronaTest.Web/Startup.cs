@@ -18,6 +18,7 @@ namespace CoronaTest.Web
             services.AddMediatR(typeof(Startup));
             services.AddSingleton<CoronaTestRepository>();
             services.TryAddSingleton<IDateTimeProvider, DateTimeProvider>();
+            services.TryAddSingleton<ICoronaTestRepository, CoronaTestRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

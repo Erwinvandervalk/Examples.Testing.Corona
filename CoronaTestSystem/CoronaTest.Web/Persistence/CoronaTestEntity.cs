@@ -19,9 +19,10 @@ namespace CoronaTest.Web.Persistence
         public TestResult TestResult { get; set; }
         public long Version { get; set; }
 
-        public static CoronaTestEntity ScheduleNewAppointment(string location, DateTimeOffset scheduledOn, string testSubjectIdentificatieNummer, string testSubjectName, DateTimeOffset now)
+        public static CoronaTestEntity ScheduleNewAppointment(string location, DateTimeOffset scheduledOn,
+            string testSubjectIdentificatieNummer, string testSubjectName, DateTimeOffset now)
         {
-            var entity = new CoronaTestEntity()
+            var entity = new CoronaTestEntity
             {
                 Id = Guid.NewGuid(),
                 ScheduledOn = scheduledOn,

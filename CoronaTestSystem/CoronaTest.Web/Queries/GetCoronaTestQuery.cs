@@ -7,6 +7,7 @@ namespace CoronaTest.Web.Queries
     public class GetCoronaTestQuery : IRequest<GetCoronaTestQuery.Response>
     {
         public Guid Id { get; set; }
+
         public class Response
         {
             public Guid Id { get; set; }

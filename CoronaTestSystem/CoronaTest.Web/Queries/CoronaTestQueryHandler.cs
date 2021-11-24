@@ -14,7 +14,8 @@ namespace CoronaTest.Web.Queries
             _repository = repository;
         }
 
-        public async Task<GetCoronaTestQuery.Response> Handle(GetCoronaTestQuery request, CancellationToken cancellationToken)
+        public async Task<GetCoronaTestQuery.Response> Handle(GetCoronaTestQuery request,
+            CancellationToken cancellationToken)
         {
             var item = await _repository.Get(request.Id, cancellationToken);
 
@@ -37,5 +38,4 @@ namespace CoronaTest.Web.Queries
             };
         }
     }
-
 }

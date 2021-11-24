@@ -6,6 +6,5 @@
         Administered = 1,
         Cancelled = 2,
         ResultKnown = 3
-        
     }
 }

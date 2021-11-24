@@ -25,7 +25,7 @@ namespace CoronaTest.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            var request = new GetCoronaTestQuery()
+            var request = new GetCoronaTestQuery
             {
                 Id = id
             };
@@ -48,7 +48,7 @@ namespace CoronaTest.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            var command = new ScheduleTestAppointmentCommand()
+            var command = new ScheduleTestAppointmentCommand
             {
                 Location = request.Location,
                 ScheduledOn = request.ScheduledOn,
@@ -59,7 +59,6 @@ namespace CoronaTest.Web.Controllers
             var result = await _mediator.Send(command);
 
             return MapToActionResult(result);
-
         }
 
         [HttpPost("/CoronaTest/{id}/Schedule")]
@@ -70,7 +69,7 @@ namespace CoronaTest.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            var command = new RecordTestAdministeredCommand()
+            var command = new RecordTestAdministeredCommand
             {
                 Id = id,
                 AdministeredOn = on
@@ -79,7 +78,6 @@ namespace CoronaTest.Web.Controllers
             var result = await _mediator.Send(command);
 
             return MapToActionResult(result);
-
         }
 
         [HttpPost("/CoronaTest/{id}/Result")]
@@ -90,7 +88,7 @@ namespace CoronaTest.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            var command = new RecordTestResultCommand()
+            var command = new RecordTestResultCommand
             {
                 Id = id,
                 TestResult = testResult
@@ -99,7 +97,6 @@ namespace CoronaTest.Web.Controllers
             var result = await _mediator.Send(command);
 
             return MapToActionResult(result);
-
         }
 
         private IActionResult MapToActionResult(CommandResponse result)

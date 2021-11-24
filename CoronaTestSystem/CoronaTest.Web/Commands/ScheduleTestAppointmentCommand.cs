@@ -9,14 +9,10 @@ namespace CoronaTest.Web.Commands
         public DateTimeOffset ScheduledOn { get; set; }
         public string TestSubjectIdentificatieNummer { get; set; }
         public string TestSubjectName { get; set; }
-
-
-
     }
 
     public abstract class CommandResponse
     {
-
     }
 
 
@@ -26,14 +22,12 @@ namespace CoronaTest.Web.Commands
         public long Version { get; set; }
     }
 
-    public class FailureResponse: CommandResponse
+    public class FailureResponse : CommandResponse
     {
         public string Reason { get; set; }
     }
 
     public class NotFoundResponse : CommandResponse
     {
-
     }
-
 }

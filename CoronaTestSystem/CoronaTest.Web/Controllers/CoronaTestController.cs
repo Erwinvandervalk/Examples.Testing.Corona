@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CoronaTest.Web.Commands;
 using CoronaTest.Web.Persistence;
+using CoronaTest.Web.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,9 +18,26 @@ namespace CoronaTest.Web.Controllers
         }
 
         [HttpGet("/CoronaTest/{id}")]
-        public string Get(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
-            return "hi";
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var request = new GetCoronaTestQuery()
+            {
+                Id = id
+            };
+
+            var result = await _mediator.Send(request);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
         }
 
         [HttpPost("/CoronaTest")]

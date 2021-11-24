@@ -5,15 +5,13 @@ using MediatR;
 
 namespace CoronaTest.Web.Commands
 {
-    public class CoronaTestCommandHandlers : 
-        IRequestHandler<ScheduleTestAppointmentCommand, CommandResponse>,
-        IRequestHandler<RecordTestAdministeredCommand, CommandResponse>,
-        IRequestHandler<RecordTestResultCommand, CommandResponse>
+    public class ScheduleTestAppointmentCommandHandler : 
+        IRequestHandler<ScheduleTestAppointmentCommand, CommandResponse>
     {
         private readonly CoronaTestRepository _repository;
         private readonly IDateTimeProvider _dateTimeProvider;
 
-        public CoronaTestCommandHandlers(CoronaTestRepository repository, IDateTimeProvider dateTimeProvider)
+        public ScheduleTestAppointmentCommandHandler(CoronaTestRepository repository, IDateTimeProvider dateTimeProvider)
         {
             _repository = repository;
             _dateTimeProvider = dateTimeProvider;
@@ -36,6 +34,20 @@ namespace CoronaTest.Web.Commands
                 Version = appointment.Version
             };
         }
+        
+    }
+    public class RecordTestAdministeredCommandHandler :
+      IRequestHandler<RecordTestAdministeredCommand, CommandResponse>
+    {
+        private readonly CoronaTestRepository _repository;
+        private readonly IDateTimeProvider _dateTimeProvider;
+
+        public RecordTestAdministeredCommandHandler(CoronaTestRepository repository, IDateTimeProvider dateTimeProvider)
+        {
+            _repository = repository;
+            _dateTimeProvider = dateTimeProvider;
+        }
+        
 
         public async Task<CommandResponse> Handle(RecordTestAdministeredCommand request, CancellationToken cancellationToken)
         {
@@ -46,7 +58,9 @@ namespace CoronaTest.Web.Commands
 
             if (appointment.Status != TestStatus.Scheduled && appointment.Status != TestStatus.Administered)
             {
-                return new FailureResponse(){Reason =
+                return new FailureResponse()
+                {
+                    Reason =
                     $"Can't record that test is administered. Status is: '{appointment.Status}'"
                 };
             }
@@ -63,7 +77,20 @@ namespace CoronaTest.Web.Commands
                 Version = appointment.Version
             };
         }
+        
+    }
+    public class RecordTestResultCommandHandler :
+      IRequestHandler<RecordTestResultCommand, CommandResponse>
+    {
+        private readonly CoronaTestRepository _repository;
+        private readonly IDateTimeProvider _dateTimeProvider;
 
+        public RecordTestResultCommandHandler(CoronaTestRepository repository, IDateTimeProvider dateTimeProvider)
+        {
+            _repository = repository;
+            _dateTimeProvider = dateTimeProvider;
+        }
+        
         public async Task<CommandResponse> Handle(RecordTestResultCommand request, CancellationToken cancellationToken)
         {
             var appointment = await _repository.Get(request.Id, cancellationToken);

@@ -21,7 +21,7 @@ namespace CoronaTest.Web
         {
             services.AddControllers();
             services.AddMediatR(typeof(Startup));
-
+            services.AddSingleton<CoronaTestRepository>();
             services.TryAddSingleton<IDateTimeProvider, DateTimeProvider>();
 
         }

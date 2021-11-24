@@ -2,48 +2,110 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization;
+using System.Text;
 using System.Threading.Tasks;
 using CoronaTest.Web;
+using CoronaTest.Web.Controllers;
 using CoronaTest.Web.Persistence;
 using ITG.Brix.Integration.Logging;
 using ITG.Brix.Integration.Testing.Logging;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace CoronaTest.Tests
 {
+    public static class HttpClientExtensions
+    {
+        public static StringContent ToStringContent(this object obj)
+        {
+            return new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
+        }
+
+        public static async Task<T> To<T>(this HttpResponseMessage response)
+        {
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<T>(json);
+        }
+    }
+
+    public class CoronaTestClient
+    {
+        private readonly HttpClient _client;
+
+        public CoronaTestClient(HttpClient client)
+        {
+            _client = client;
+        }
+
+
+        public async Task<HttpResponseMessage> ScheduleTest(ScheduleTestRequest request, HttpStatusCode expectedStatusCode = HttpStatusCode.OK)
+        {
+            var queryString = GetDefaultQueryString();
+            var result = await _client.PostAsync("/CoronaTest" + queryString, request.ToStringContent());
+
+            result.StatusCode.ShouldBe(expectedStatusCode);
+
+            return result;
+        }
+
+
+        private static QueryString GetDefaultQueryString()
+        {
+            var queryString = new QueryString();
+            //return queryString.Add("ApiVersion", "2.0");
+            return queryString;
+        }
+    }
+
+
     public class ApiTests : IAsyncLifetime
     {
         private ApiTestFixture Fixture;
         private HttpClient Client;
-
+        private CoronaTestClient CoronaTestClient;
 
         public ApiTests(ITestOutputHelper output)
         {
             Fixture = new ApiTestFixture(output);
-
-            
         }
 
         [Fact]
         public async Task Can_get_home()
         {
             var result = await Client.GetAsync("/CoronaTest/" + Guid.NewGuid());
+            result.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
+        public async Task Can_schedule_appointment()
+        {
+            var result = await CoronaTestClient.ScheduleTest(new ScheduleTestRequest()
+            {
+                Location = "test",
+                ScheduledOn = DateTimeOffset.Now,
+                TestSubjectIdentificatieNummer = "1",
+                TestSubjectName = "2"
+            });
+                
             result.StatusCode.ShouldBe(HttpStatusCode.OK);
         }
+
 
         public async Task InitializeAsync()
         {
             await Fixture.StartAsync();
             Client = Fixture.BuildClient();
+            CoronaTestClient = Fixture.BuildCoronaTestClient();
         }
 
         public async Task DisposeAsync()
@@ -100,6 +162,7 @@ namespace CoronaTest.Tests
             Server = _host.GetTestServer();
         }
 
+        public CoronaTestClient BuildCoronaTestClient() => new CoronaTestClient(BuildClient());
         public TestServer Server { get; set; }
 
         public async ValueTask DisposeAsync()

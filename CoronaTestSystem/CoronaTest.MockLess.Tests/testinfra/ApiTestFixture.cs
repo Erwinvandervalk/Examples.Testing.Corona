@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using CoronaTest.MockLess.Web;
+using CoronaTest.MockLess.Web.Commands;
 using CoronaTest.MockLess.Web.Persistence;
 using ITG.Brix.Integration.Logging;
 using ITG.Brix.Integration.Testing.Logging;
@@ -21,11 +22,13 @@ namespace CoronaTest.MockLess.Tests.testinfra
         private const string InMemoryConnectionString = "DataSource=:memory:";
         private readonly IHostBuilder _hostBuilder;
         private readonly ITestOutputHelper _output;
+        private readonly StaticTestData _the;
         private IHost _host;
 
-        public ApiTestFixture(ITestOutputHelper output)
+        public ApiTestFixture(ITestOutputHelper output, StaticTestData the)
         {
             _output = output;
+            _the = the;
 
             LoggerProvider = new TestLoggerProvider(output);
             var _connection = new SqliteConnection(InMemoryConnectionString);
@@ -47,6 +50,9 @@ namespace CoronaTest.MockLess.Tests.testinfra
                                 })
                             .ConfigureServices(s =>
                                 {
+                                    s.AddSingleton<IDateTimeProvider>(new ManualDateTimeProvider(the));
+                                    s.AddSingleton<IGuidGenerator>(new DeterministicGuidGenerator(the));
+
                                     s.AddDbContext<CoronaDbContext>(opt =>
                                         {
                                             opt.UseSqlite(_connection);

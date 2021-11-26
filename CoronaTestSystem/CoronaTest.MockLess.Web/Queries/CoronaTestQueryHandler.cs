@@ -21,6 +21,7 @@ namespace CoronaTest.MockLess.Web.Queries
 
             if (item == null)
                 return null;
+
             return new GetCoronaTestQuery.Response
             {
                 Id = item.Id,

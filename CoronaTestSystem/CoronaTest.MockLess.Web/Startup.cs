@@ -1,4 +1,6 @@
+using CoronaTest.MockLess.Web.Commands;
 using CoronaTest.MockLess.Web.Persistence;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,6 +20,8 @@ namespace CoronaTest.MockLess.Web
             services.AddMediatR(typeof(Startup));
             services.AddSingleton<CoronaTestRepository>();
             services.TryAddSingleton<IDateTimeProvider, DateTimeProvider>();
+            services.TryAddSingleton<IGuidGenerator, GuidGenerator>();
+            services.AddFluentValidation(c => c.RegisterValidatorsFromAssemblyContaining<Startup>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

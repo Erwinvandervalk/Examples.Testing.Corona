@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,8 +22,13 @@ namespace CoronaTest.MockLess.Web.Persistence
             return item;
         }
 
-        public async Task SaveAsync(CancellationToken ct)
+        public async Task SaveAsync(CoronaTestEntity coronaTestEntity, CancellationToken ct)
         {
+            if (!_context.CoronaTests.Contains(coronaTestEntity))
+            {
+                _context.CoronaTests.Add(coronaTestEntity);
+            }
+
             await _context.SaveChangesAsync(ct);
         }
     }

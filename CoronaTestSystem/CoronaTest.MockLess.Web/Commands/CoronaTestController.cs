@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CoronaTest.MockLess.Web.Commands;
+using CoronaTest.MockLess.Web.Controllers;
 using CoronaTest.MockLess.Web.Persistence;
 using CoronaTest.MockLess.Web.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CoronaTest.MockLess.Web.Controllers
+namespace CoronaTest.MockLess.Web.Commands
 {
     public class CoronaTestController : Controller
     {

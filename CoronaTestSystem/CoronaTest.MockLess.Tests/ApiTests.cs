@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using CoronaTest.MockLess.Tests.testinfra;
-using CoronaTest.MockLess.Web.Controllers;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -16,9 +15,13 @@ namespace CoronaTest.MockLess.Tests
         private CoronaTestClient CoronaTestClient;
         private readonly ApiTestFixture Fixture;
 
+        public StaticTestData The = new StaticTestData();
+
+        public TestDataBuilder Some => new TestDataBuilder(The);
+
         public ApiTests(ITestOutputHelper output)
         {
-            Fixture = new ApiTestFixture(output);
+            Fixture = new ApiTestFixture(output, The);
         }
 
 
@@ -44,15 +47,24 @@ namespace CoronaTest.MockLess.Tests
         [Fact]
         public async Task Can_schedule_appointment()
         {
-            var result = await CoronaTestClient.ScheduleTest(new ScheduleTestRequest
-            {
-                Location = "test",
-                ScheduledOn = DateTimeOffset.Now,
-                TestSubjectIdentificatieNummer = "1",
-                TestSubjectName = "2"
-            });
+            await CoronaTestClient.ScheduleTest(
+                request: Some.ScheduleTestRequest(), 
 
-            result.StatusCode.ShouldBe(HttpStatusCode.OK);
+                expectedStatusCode: HttpStatusCode.OK);
+
+            var (response, result) = await CoronaTestClient.GetTest(The.TestId);
+
+            result.ShouldBeEquivalentTo(Some.GetScheduledTestResponse());
+        }
+
+        [Fact]
+        public async Task Cannot_schedule_test_in_the_past()
+        {
+            var result = await CoronaTestClient.ScheduleTest(
+                request: Some.ScheduleTestRequest()
+                    .With(x => x.ScheduledOn -= TimeSpan.FromHours(1)), 
+
+                expectedStatusCode: HttpStatusCode.BadRequest);
         }
     }
 }

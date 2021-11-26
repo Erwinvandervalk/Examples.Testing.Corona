@@ -35,5 +35,10 @@ namespace CoronaTest.Web.Persistence
             };
             return entity;
         }
+
+        public void SetVersion(int version)
+        {
+            this.Version = version;
+        }
     }
 }

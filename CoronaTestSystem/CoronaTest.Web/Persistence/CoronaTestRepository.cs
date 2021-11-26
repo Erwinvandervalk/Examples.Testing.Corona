@@ -13,10 +13,10 @@ namespace CoronaTest.Web.Persistence
 
     public class CoronaTestRepository : ICoronaTestRepository
     {
-        private readonly CoronaDbContext _context;
+        private readonly ICoronaDbContext _context;
         private readonly IDateTimeProvider _dateTimeProvider;
 
-        public CoronaTestRepository(CoronaDbContext context, IDateTimeProvider dateTimeProvider)
+        public CoronaTestRepository(ICoronaDbContext context, IDateTimeProvider dateTimeProvider)
         {
             _context = context;
             _dateTimeProvider = dateTimeProvider;

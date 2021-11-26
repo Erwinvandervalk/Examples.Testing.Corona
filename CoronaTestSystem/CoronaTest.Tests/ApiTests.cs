@@ -47,12 +47,26 @@ namespace CoronaTest.Tests
             var result = await CoronaTestClient.ScheduleTest(new ScheduleTestRequest
             {
                 Location = "test",
-                ScheduledOn = DateTimeOffset.Now,
+                ScheduledOn = DateTimeOffset.Now.AddDays(1),
                 TestSubjectIdentificatieNummer = "1",
                 TestSubjectName = "2"
             });
 
             result.StatusCode.ShouldBe(HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task Cannot_schedule_appointment_in_past()
+        {
+            var result = await CoronaTestClient.ScheduleTest(new ScheduleTestRequest
+            {
+                Location = "test",
+                ScheduledOn = DateTimeOffset.Now.AddDays(-1),
+                TestSubjectIdentificatieNummer = "1",
+                TestSubjectName = "2"
+            }, HttpStatusCode.BadRequest);
+
+            result.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         }
     }
 }

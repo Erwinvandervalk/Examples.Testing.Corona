@@ -19,12 +19,13 @@ namespace CoronaTest.MockLess.Web.Persistence
         public TestResult TestResult { get; set; }
         public long Version { get; set; }
 
-        public static CoronaTestEntity ScheduleNewAppointment(string location, DateTimeOffset scheduledOn,
+        public static CoronaTestEntity ScheduleNewAppointment(Guid id, string location, DateTimeOffset scheduledOn,
             string testSubjectIdentificatieNummer, string testSubjectName, DateTimeOffset now)
         {
             var entity = new CoronaTestEntity
             {
-                Id = Guid.NewGuid(),
+                Id = id,
+                Location = location,
                 ScheduledOn = scheduledOn,
                 TestSubjectIdentificatieNummer = testSubjectIdentificatieNummer,
                 TestSubjectName = testSubjectName,

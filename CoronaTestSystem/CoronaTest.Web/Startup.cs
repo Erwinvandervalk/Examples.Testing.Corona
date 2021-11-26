@@ -1,4 +1,5 @@
 using CoronaTest.Web.Persistence;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,6 +20,9 @@ namespace CoronaTest.Web
             services.AddSingleton<CoronaTestRepository>();
             services.TryAddSingleton<IDateTimeProvider, DateTimeProvider>();
             services.TryAddSingleton<ICoronaTestRepository, CoronaTestRepository>();
+            services.TryAddSingleton<ICoronaDbContext, CoronaDbContext>();
+            services.AddFluentValidation(c => c.RegisterValidatorsFromAssemblyContaining<Startup>());
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CoronaTest.MockLess.Web.Persistence;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace CoronaTest.MockLess.Web.Commands
 {
@@ -9,26 +10,35 @@ namespace CoronaTest.MockLess.Web.Commands
         IRequestHandler<ScheduleTestAppointmentCommand, CommandResponse>
     {
         private readonly IDateTimeProvider _dateTimeProvider;
+        private readonly IGuidGenerator _guidGenerator;
+        private readonly ILogger<ScheduleTestAppointmentCommandHandler> _logger;
         private readonly CoronaTestRepository _repository;
 
         public ScheduleTestAppointmentCommandHandler(CoronaTestRepository repository,
-            IDateTimeProvider dateTimeProvider)
+            IDateTimeProvider dateTimeProvider,
+            IGuidGenerator guidGenerator,
+            ILogger<ScheduleTestAppointmentCommandHandler> logger)
         {
             _repository = repository;
             _dateTimeProvider = dateTimeProvider;
+            _guidGenerator = guidGenerator;
+            _logger = logger;
         }
 
         public async Task<CommandResponse> Handle(ScheduleTestAppointmentCommand request,
             CancellationToken cancellationToken)
         {
             var appointment = CoronaTestEntity.ScheduleNewAppointment(
+                _guidGenerator.GetNext(),
                 request.Location,
                 request.ScheduledOn,
                 request.TestSubjectIdentificatieNummer,
                 request.TestSubjectName,
                 _dateTimeProvider.GetNow());
 
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.SaveAsync(appointment, cancellationToken);
+
+            _logger.LogInformation("Saved {@testAppointment}", appointment);
 
             return new SuccessResponse
             {
@@ -72,7 +82,7 @@ namespace CoronaTest.MockLess.Web.Commands
             appointment.Status = TestStatus.Administered;
             appointment.Version++;
 
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.SaveAsync(appointment, cancellationToken);
 
             return new SuccessResponse
             {
@@ -115,7 +125,7 @@ namespace CoronaTest.MockLess.Web.Commands
             appointment.ResultsKnown = _dateTimeProvider.GetNow();
             appointment.Version++;
 
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.SaveAsync(appointment, cancellationToken);
 
             return new SuccessResponse
             {

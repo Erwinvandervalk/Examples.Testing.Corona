@@ -21,7 +21,7 @@ namespace CoronaTest.Web
             services.TryAddSingleton<IDateTimeProvider, DateTimeProvider>();
             services.TryAddSingleton<ICoronaTestRepository, CoronaTestRepository>();
             services.TryAddSingleton<ICoronaDbContext, CoronaDbContext>();
-            services.AddFluentValidation(c => c.RegisterValidatorsFromAssemblyContaining<Startup>());
+            services.AddFluentValidation(c => c.RegisterValidatorsFromAssemblyContaining<start>());
             
         }
 

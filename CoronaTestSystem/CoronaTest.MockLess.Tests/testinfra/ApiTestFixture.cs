@@ -52,6 +52,7 @@ namespace CoronaTest.MockLess.Tests.testinfra
                                 {
                                     s.AddSingleton<IDateTimeProvider>(new ManualDateTimeProvider(the));
                                     s.AddSingleton<IGuidGenerator>(new DeterministicGuidGenerator(the));
+                                    s.AddSingleton<IEmailSender, FakeEmailSender>();
 
                                     s.AddDbContext<CoronaDbContext>(opt =>
                                         {
@@ -62,6 +63,8 @@ namespace CoronaTest.MockLess.Tests.testinfra
                             .UseStartup<Startup>();
                     });
         }
+
+        public FakeEmailSender FakeEmailSender => _host.Services.GetService<IEmailSender>() as FakeEmailSender;
 
         public TestServer Server { get; set; }
         public TestLoggerProvider LoggerProvider { get; set; }

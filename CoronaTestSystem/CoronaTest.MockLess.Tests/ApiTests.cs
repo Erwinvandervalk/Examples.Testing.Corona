@@ -51,6 +51,16 @@ namespace CoronaTest.MockLess.Tests
         }
 
         [Fact]
+        public async Task When_appointment_is_scheduled_Then_confirmation_email_is_sent()
+        {
+            await CoronaTestClient.ScheduleTest(
+                request: Some.ScheduleTestRequest(),
+                expectedStatusCode: HttpStatusCode.OK);
+
+            Fixture.FakeEmailSender.SentEmails.ShouldContain(x => x.To == The.TestSubjectName);
+        }
+
+        [Fact]
         public async Task Can_administer_scheduled_test()
         {
             await CoronaTestClient.ScheduleTest(
@@ -68,6 +78,13 @@ namespace CoronaTest.MockLess.Tests
                         x.Status = TestStatus.Administered;
                         x.Version = 2;
                     }));
+        }
+
+        [Fact]
+        public async Task When_administering_non_existing_test_then_404()
+        {
+            await CoronaTestClient.AdministerTest(Guid.NewGuid(), The.CurrentDateTime.AddDays(1), 
+                expectedStatusCode: HttpStatusCode.NotFound);
         }
 
         [Fact]

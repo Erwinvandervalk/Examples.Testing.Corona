@@ -10,24 +10,4 @@ namespace CoronaTest.MockLess.Web.Commands
         public string TestSubjectIdentificatieNummer { get; set; }
         public string TestSubjectName { get; set; }
     }
-
-    public abstract class CommandResponse
-    {
-    }
-
-
-    public class SuccessResponse : CommandResponse
-    {
-        public Guid Id { get; set; }
-        public long Version { get; set; }
-    }
-
-    public class FailureResponse : CommandResponse
-    {
-        public string Reason { get; set; }
-    }
-
-    public class NotFoundResponse : CommandResponse
-    {
-    }
 }

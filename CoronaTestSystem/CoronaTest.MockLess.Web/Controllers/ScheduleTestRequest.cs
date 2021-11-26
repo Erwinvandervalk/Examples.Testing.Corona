@@ -1,7 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using CoronaTest.MockLess.Web.Persistence;
-using FluentValidation;
 
 namespace CoronaTest.MockLess.Web.Controllers
 {
@@ -23,14 +21,5 @@ namespace CoronaTest.MockLess.Web.Controllers
         [Required] public string TestSubjectIdentificatieNummer { get; set; }
 
         [Required] public string TestSubjectName { get; set; }
-    }
-
-    public class ScheduleTestRequestValidator : AbstractValidator<ScheduleTestRequest>
-    {
-        public ScheduleTestRequestValidator(IDateTimeProvider provider)
-        {
-            RuleFor(x => x.ScheduledOn)
-                .GreaterThan(provider.GetNow());
-        }
     }
 }

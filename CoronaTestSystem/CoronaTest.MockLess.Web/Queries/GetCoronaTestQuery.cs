@@ -10,7 +10,6 @@ namespace CoronaTest.MockLess.Web.Queries
 
         public class Response
         {
-
             public Guid Id { get; set; }
             public string Location { get; set; }
             public DateTimeOffset CreatedOn { get; set; }

@@ -61,8 +61,8 @@ namespace CoronaTest.MockLess.Web.Commands
             return MapToActionResult(result);
         }
 
-        [HttpPost("/CoronaTest/{id}/Schedule")]
-        public async Task<IActionResult> Schedule([FromRoute] Guid id, [FromBody] DateTimeOffset on)
+        [HttpPost("/CoronaTest/{id}/Administer")]
+        public async Task<IActionResult> Administer([FromRoute] Guid id, [FromBody] DateTimeOffset on)
         {
             if (!ModelState.IsValid)
             {

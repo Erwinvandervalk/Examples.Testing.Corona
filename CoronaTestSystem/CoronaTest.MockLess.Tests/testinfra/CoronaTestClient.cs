@@ -2,7 +2,6 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using CoronaTest.MockLess.Web.Commands;
 using CoronaTest.MockLess.Web.Controllers;
 using CoronaTest.MockLess.Web.Queries;
 using Microsoft.AspNetCore.Http;
@@ -26,6 +25,18 @@ namespace CoronaTest.MockLess.Tests.testinfra
         {
             var queryString = GetDefaultQueryString();
             var result = await _client.PostAsync("/CoronaTest" + queryString, request.ToStringContent());
+
+            result.StatusCode.ShouldBe(expectedStatusCode);
+
+            return result;
+        }
+
+        public async Task<HttpResponseMessage> AdministerTest(Guid testId, DateTimeOffset On,
+            HttpStatusCode expectedStatusCode = HttpStatusCode.OK)
+        {
+            var queryString = GetDefaultQueryString();
+
+            var result = await _client.PostAsync("/CoronaTest/" + testId + "/Administer" + queryString, On.ToStringContent());
 
             result.StatusCode.ShouldBe(expectedStatusCode);
 

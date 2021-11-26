@@ -7,7 +7,8 @@ namespace CoronaTest.MockLess.Web.Controllers
 {
     public class ScheduleTestRequest
     {
-        public ScheduleTestRequest(string location, DateTimeOffset scheduledOn, string testSubjectIdentificatieNummer, string testSubjectName)
+        public ScheduleTestRequest(string location, DateTimeOffset scheduledOn, string testSubjectIdentificatieNummer,
+            string testSubjectName)
         {
             Location = location;
             ScheduledOn = scheduledOn;
@@ -29,7 +30,7 @@ namespace CoronaTest.MockLess.Web.Controllers
         public ScheduleTestRequestValidator(IDateTimeProvider provider)
         {
             RuleFor(x => x.ScheduledOn)
-                .GreaterThanOrEqualTo(provider.GetNow());
+                .GreaterThan(provider.GetNow());
         }
     }
 }

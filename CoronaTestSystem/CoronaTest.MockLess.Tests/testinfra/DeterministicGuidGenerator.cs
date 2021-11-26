@@ -7,12 +7,12 @@ namespace CoronaTest.MockLess.Tests.testinfra
     {
         private readonly StaticTestData _testData;
 
+        private bool _testIdCreated;
+
         public DeterministicGuidGenerator(StaticTestData testData)
         {
             _testData = testData;
         }
-
-        private bool _testIdCreated = false;
 
         public Guid GetNext()
         {
